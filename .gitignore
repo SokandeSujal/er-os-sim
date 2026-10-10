@@ -1,0 +1,11 @@
+*.o
+*.exe
+er_sim
+demos/fork_sort
+demos/orphan
+demos/zombie
+tests/test_banker
+tests/test_sched
+tests/test_cache
+hospital.log
+*.tmp

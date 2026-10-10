@@ -1,0 +1,14 @@
+@policy=srtf
+@tick_ms=300
+@ventilators=5
+@total_blood=0
+@total_icu=0
+@total_surgery=0
+@readers=3
+@writers=2
+@cache=4
+# id,arrival,burst,severity,needs_vent,max_b,max_i,max_s,req1_b,req1_i,req1_s,req2_b,req2_i,req2_s,req2_at
+1,0,5,1,0,0,0,0,0,0,0,0,0,0,0
+2,1,3,1,0,0,0,0,0,0,0,0,0,0,0
+3,2,8,1,0,0,0,0,0,0,0,0,0,0,0
+4,3,6,1,0,0,0,0,0,0,0,0,0,0,0
