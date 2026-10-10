@@ -80,6 +80,7 @@ typedef struct {
     sem_t cache_mutex, feed_mutex;
     CacheState fifo, lru;
     volatile unsigned long fifo_hits, fifo_misses, lru_hits, lru_misses;
+    volatile unsigned long cache_lookups;
     char gantt[MAX_GANTT];
     int gantt_len;
     char log_lines[LOG_LINES][LOG_LINE];
@@ -113,6 +114,7 @@ int fifo_access(CacheState *state, int page);
 int lru_access(CacheState *state, int page);
 int optimal_faults(const int refs[], int count, int frames);
 void cache_access_shared(int patient_id);
+int cache_next_shared(void);
 int cache_demo(void);
 
 void patient_process(int slot);

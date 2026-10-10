@@ -1,0 +1,15 @@
+flowchart LR
+  subgraph Reader
+    RM[wait mutex] --> RI[increment read_count]
+    RI --> RF{first reader?}
+    RF -->|yes| RW[wait wrt]
+    RF -->|no| RU[post mutex]
+    RW --> RU --> READ[read/check/cache]
+    READ --> RD[decrement under mutex]
+    RD --> RL{last reader?}
+    RL -->|yes| RP[post wrt]
+  end
+  subgraph Writer
+    WW[wait wrt] --> WRITE[update a, b, sum]
+    WRITE --> WP[post wrt]
+  end

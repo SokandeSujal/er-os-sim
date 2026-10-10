@@ -1,0 +1,10 @@
+flowchart TD
+  A[Resource request] --> N{Request <= Need?}
+  N -->|no| ERR[ERROR_EXCEEDS_MAX]
+  N -->|yes| V{Request <= Available?}
+  V -->|no| W[WAIT_UNAVAILABLE]
+  V -->|yes| TMP[Tentatively allocate]
+  TMP --> SAFE{Safety algorithm succeeds?}
+  SAFE -->|yes| G[Commit: GRANTED]
+  SAFE -->|no| RB[Roll back]
+  RB --> U[WAIT_UNSAFE]

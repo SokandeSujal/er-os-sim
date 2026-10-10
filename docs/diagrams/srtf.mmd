@@ -1,0 +1,14 @@
+flowchart TD
+  T[Start tick] --> L[Collect READY patients]
+  L --> E{Any READY?}
+  E -->|no| I[Log IDLE / stuck check]
+  E -->|yes| P[Pick least remaining]
+  P --> K[Tie: higher severity then lower ID]
+  K --> X{Different unfinished previous patient?}
+  X -->|yes| PRE[Log PREEMPT]
+  X -->|no| GO[Post go]
+  PRE --> GO
+  GO --> WAIT[Wait done]
+  WAIT --> REC[Record Gantt]
+  I --> INC[Increment tick]
+  REC --> INC

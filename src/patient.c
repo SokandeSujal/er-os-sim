@@ -5,6 +5,7 @@
 #define _DEFAULT_SOURCE
 #include "common.h"
 #include <errno.h>
+#include <signal.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -13,6 +14,7 @@ static int request_until_granted(int slot,const int req[]){
     for(;;){BankerResult r=banker_request(slot,req);if(r==GRANTED){event_log("BANKER_GRANT",g_shm->p[slot].id,"request=[%d,%d,%d]",req[0],req[1],req[2]);return 0;}if(r==ERROR_EXCEEDS_MAX){event_log("ERROR",g_shm->p[slot].id,"request exceeds maximum");return -1;}if(!denied){event_log("BANKER_DENY",g_shm->p[slot].id,"reason=%s",r==WAIT_UNSAFE?"unsafe":"unavailable");denied=1;}sleep_ms(50);}
 }
 void patient_process(int slot){
+    signal(SIGINT,SIG_DFL);signal(SIGTERM,SIG_DFL);
     Patient *p=&g_shm->p[slot];p->pid=getpid();p->state=ARRIVED;event_log("ARRIVE",p->id,"burst=%d severity=%d",p->burst,p->severity);
     if(p->needs_vent){p->state=WAIT_VENT;event_log("VENT_WAIT",p->id,"");if(sem_wait(&g_shm->vent)<0){event_log("ERROR",p->id,"vent sem_wait: %s",strerror(errno));_exit(2);}p->has_vent=1;event_log("VENT_ACQ",p->id,"");}
     p->state=WAIT_RES;if(request_until_granted(slot,p->req1)<0)_exit(2);p->state=READY;

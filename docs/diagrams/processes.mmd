@@ -1,0 +1,16 @@
+flowchart LR
+  M[Admission and reaper] --> S[Scheduler]
+  M --> L[Logger]
+  M --> D[Dashboard]
+  M --> P[Patients]
+  M --> R[Doctors]
+  M --> W[Nurses]
+  S <--> SH[(Shared memory)]
+  D --> SH
+  P <--> SH
+  R <--> SH
+  W <--> SH
+  M & S & P & R & W --> Q{{Pipe}}
+  Q --> L
+  L --> F[hospital.log]
+  L --> SH

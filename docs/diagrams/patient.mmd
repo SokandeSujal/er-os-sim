@@ -1,0 +1,15 @@
+flowchart TD
+  A[ARRIVED] --> V{Needs ventilator?}
+  V -->|yes| WV[WAIT_VENT] --> ACQ[Acquire ventilator]
+  V -->|no| WR[WAIT_RES]
+  ACQ --> WR
+  WR --> B{Banker grants?}
+  B -->|no: sleep 50 ms| WR
+  B -->|yes| R[READY]
+  R --> G[Wait on go]
+  G --> U[RUN one unit]
+  U --> Z{Remaining zero?}
+  Z -->|yes| REL[Release resources and ventilator] --> DONE[DONE]
+  Z -->|no| Q{Second request point?}
+  Q -->|yes: signal done first| WR
+  Q -->|no| R
